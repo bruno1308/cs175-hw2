@@ -1,22 +1,26 @@
 package com.example.cs175_hw2;
 
-import java.text.NumberFormat;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.database.sqlite.*;
+import android.database.*;
+import android.app.AlertDialog;
+import android.content.*;
 
 public class SettingsActivity extends ActionBarActivity {
-
+	SeekBar seekBar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		
-		 SeekBar seekBar = (SeekBar)findViewById(R.id.seekBar1); 
+		   seekBar = (SeekBar)findViewById(R.id.seekBar1); 
 	       final TextView seekBarValue = (TextView)findViewById(R.id.seek_bar_value); 
 	       seekBarValue.setText("1.0s");
 	       seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){ 
@@ -60,5 +64,37 @@ public class SettingsActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void launchDialog(View view){
+		final DBConnection my_connection = new DBConnection(this, "Game", 3);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+		builder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	        	SQLiteDatabase db = my_connection.getReadableDatabase();
+	        	Cursor c = db.rawQuery("SELECT * FROM utils", null);
+	        	db = my_connection.getWritableDatabase();
+        		String name = ((EditText)findViewById(R.id.editText1)).getText().toString(); 
+        		double value = seekBar.getProgress();
+	        	if(c.getCount()== 0){
+	        		db.execSQL("INSERT INTO utils VALUES (0, '"+name+"',0,"+value+")");
+	        	}
+	        	else{
+	        		db.execSQL("UPDATE utils SET name = '"+name+"', slider = "+value+" WHERE id = "+0+"");
+	        	}
+	        	db.close();
+	        	finish();
+	           }
+	       });
+		builder.setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	               finish();
+	           }
+	       });
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		        
+		
 	}
 }

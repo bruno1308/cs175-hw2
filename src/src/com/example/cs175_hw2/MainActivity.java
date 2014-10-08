@@ -6,7 +6,18 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
+/* TODO Demo of code running on device	1pt
+	TODO Launch screen as described with start and setting buttons working (1/2pt each).	1pt
+	TODO Settings page as described.	1pt
+	TODO Persistence of name, slider, and high score data.	1pt
+	TODO Slider value used to set how long a person has to change the screen and click button during game play.	1pt
+	TODO Game play as described.	1pt
+	TODO Lives works as described.	1pt
+	TODO Game scoring works as described.	1pt
+	TODO Game over works as described.	1pt
+	TODO 10 seconds then go back to the start screen
+	TODO save high score if higher than highest
+	TODO Log messages on screen orientation change.*/
 
 public class MainActivity extends ActionBarActivity {
 
@@ -37,7 +48,13 @@ public class MainActivity extends ActionBarActivity {
     }
     
     public void openSettingsActivity(View view){
-    	Intent intent = new Intent(this, SettingsActivity.class);
-    	startActivity(intent);
+    	Intent settings = new Intent(this, SettingsActivity.class);
+    	startActivity(settings);
+    }    
+    
+    public void openGameActivity(View view){
+    	Intent game = new Intent(this, GameActivity.class);
+    	startActivity(game);
     }
+    
 }

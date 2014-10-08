@@ -1260,6 +1260,10 @@ containing a value of this type.
         public static final int app_name=0x7f0a000d;
         public static final int current_score=0x7f0a001e;
         public static final int current_score_label=0x7f0a001d;
+        public static final int dialog_cancel=0x7f0a0022;
+        public static final int dialog_message=0x7f0a001f;
+        public static final int dialog_ok=0x7f0a0021;
+        public static final int dialog_title=0x7f0a0020;
         public static final int game_speed=0x7f0a0015;
         public static final int hello_world=0x7f0a000e;
         public static final int high_score=0x7f0a001b;

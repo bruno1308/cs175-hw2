@@ -358,6 +358,10 @@ int string action_settings 0x7f0a000f
 int string app_name 0x7f0a000d
 int string current_score 0x7f0a001e
 int string current_score_label 0x7f0a001d
+int string dialog_cancel 0x7f0a0022
+int string dialog_message 0x7f0a001f
+int string dialog_ok 0x7f0a0021
+int string dialog_title 0x7f0a0020
 int string game_speed 0x7f0a0015
 int string hello_world 0x7f0a000e
 int string high_score 0x7f0a001b

@@ -20,7 +20,8 @@
      android:layout_gravity="center"
      android:layout_height="wrap_content"
      android:layout_width="wrap_content"
-     android:text="@string/start_game"/>
+     android:text="@string/start_game"
+     android:onClick="openGameActivity"/>
     <Button
      android:layout_gravity="center"
      android:layout_height="wrap_content"
@@ -29,9 +30,4 @@
      android:onClick="openSettingsActivity"/>
     </LinearLayout>
     
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
 </RelativeLayout>

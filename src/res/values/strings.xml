@@ -19,6 +19,10 @@
     <string name="there_button">I\'m There</string>
     <string name="current_score_label">Score:</string>
     <string name="current_score">0</string>
+    <string name="dialog_message">Do you want to save your changes?</string>
+    <string name="dialog_title">Save modifications</string>
+    <string name="dialog_ok">Yes</string>
+    <string name="dialog_cancel">No</string>
     
 
 </resources>
