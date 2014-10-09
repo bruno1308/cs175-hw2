@@ -141,7 +141,7 @@ public class GameActivity extends ActionBarActivity {
     		best_name = c.getString(1);
     		highscore = c.getInt(2);
     		}else{
-    			best_name = "";
+    			best_name = "Player1";
     			highscore = 0;
     		}
     		highscore_label.setText(Integer.toString(highscore)+" by "+best_name);
@@ -193,6 +193,7 @@ public class GameActivity extends ActionBarActivity {
 			final DBConnection my_connection = new DBConnection(this, "Game", 3);
 			SQLiteDatabase db = my_connection.getReadableDatabase();
         	db = my_connection.getWritableDatabase();
+        	if(current_name == "") current_name = "Player1";
         	db.execSQL("INSERT OR REPLACE INTO utils VALUES(1,'"+current_name+"', "+score+", "+seeker+")");
         	db.close();
 		}

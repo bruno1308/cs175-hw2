@@ -33,7 +33,7 @@ public class EndActivity extends ActionBarActivity {
 				
 			}
 		};
-		t.scheduleAtFixedRate(tt, 1000, 10000);
+		t.scheduleAtFixedRate(tt, 10000, 10000);
 	}
 
 	@Override
