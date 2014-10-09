@@ -17,7 +17,7 @@ public class DBConnection extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		try
  	   {
- 		  db.execSQL("CREATE TABLE IF NOT EXISTS utils (id INTEGER AUTO_INCREMENT PRIMARY KEY, name TEXT," +
+ 		  db.execSQL("CREATE TABLE IF NOT EXISTS utils (id INTEGER PRIMARY KEY, name TEXT," +
  		  		"high_score INTEGER, slider REAL)"); 
  	   }
  	   catch(SQLException e)

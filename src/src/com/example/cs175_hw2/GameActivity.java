@@ -1,8 +1,11 @@
 package com.example.cs175_hw2;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,10 +22,16 @@ public class GameActivity extends ActionBarActivity {
 	TextView lives_label;
 	TextView score_label;
 	TextView orientation_label;
+	Timer t;
+	TimerTask tt;
 	Button click;
 	int orientation;
-	int lives = 3;
+	int lives = 11;
+	int highscore=0;
 	int score = 0;
+	String current_name, best_name;
+	double seeker;
+	Boolean hasClicked=true;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,8 +41,29 @@ public class GameActivity extends ActionBarActivity {
 		score_label = (TextView)findViewById(R.id.currentScore);
 		orientation_label = (TextView)findViewById(R.id.orientation);
 		click = (Button)findViewById(R.id.button1);
-		startRound();
-		loadHighScore();		
+		loadHighScore();
+		t = new Timer();
+		tt = new TimerTask() {
+			
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() {
+				     @Override
+				     public void run() {
+				    	 if(!hasClicked) lives--;
+				    	 checkGameOver();
+				    	 startRound();
+				    	 updateScoreLives();
+				    	 hasClicked = false;
+
+				    }
+				});
+				
+				
+			}
+		};
+		t.scheduleAtFixedRate(tt, 0, (long)seeker);
+				
 	}
 
 	@Override
@@ -85,37 +115,51 @@ public class GameActivity extends ActionBarActivity {
 	   lives = savedInstanceState.getInt("lives");
 	   score = savedInstanceState.getInt("score");
 	   updateScoreLives();
+	   
 	}	
 	
 	public void loadHighScore(){
 		
 		final DBConnection my_connection = new DBConnection(this, "Game", 3);
 		SQLiteDatabase db = my_connection.getReadableDatabase();
-    	Cursor c = db.rawQuery("SELECT * FROM utils", null);
+    	Cursor c = db.rawQuery("SELECT * FROM utils where id = 0", null);
     	if(c.getCount()== 0){
-    		db.execSQL("INSERT INTO utils VALUES (0, 'Player 1',0,"+1.0+")");
+    		db.execSQL("INSERT INTO utils VALUES (0, 'Player1',0,"+1.0+")");
     		highscore_label.setText("0");
+    		seeker = 1;
     	}
     	else{
     		c.moveToNext();
-    		int highscore = c.getInt(2);
-    		highscore_label.setText(Integer.toString(highscore));
+    		seeker = c.getDouble(3);
+    		if(seeker < 5) seeker = 5;
+    		seeker /= 50;
+    		seeker *= 1000;
+    		current_name = c.getString(1);
+    		c = db.rawQuery("SELECT * FROM utils where id = 1", null);
+    		if(c.getCount() != 0){
+    		c.moveToNext();
+    		best_name = c.getString(1);
+    		highscore = c.getInt(2);
+    		}else{
+    			best_name = "";
+    			highscore = 0;
+    		}
+    		highscore_label.setText(Integer.toString(highscore)+" by "+best_name);
     	}
     	db.close();
 	}
 	
 	public void buttonClick(View view){
+   	 hasClicked = true;
 		if(orientation == getOrientation()){
 			score++;
 		}
 		else{
 			lives--;
-			if (lives == 0){
-				// TODO GAME OVER
-			}
+			checkGameOver();
 		}
 		updateScoreLives();
-		startRound();
+		
 	}
 	
 	public int getOrientation(){
@@ -141,6 +185,27 @@ public class GameActivity extends ActionBarActivity {
 			orientation_label.setText("PORTRAIT");
 		}else{
 			orientation_label.setText("LANDSCAPE");
+		}
+	}
+	
+	public void saveScore(){
+		if (score>highscore){
+			final DBConnection my_connection = new DBConnection(this, "Game", 3);
+			SQLiteDatabase db = my_connection.getReadableDatabase();
+        	db = my_connection.getWritableDatabase();
+        	db.execSQL("INSERT OR REPLACE INTO utils VALUES(1,'"+current_name+"', "+score+", "+seeker+")");
+        	db.close();
+		}
+	}
+	
+	public void checkGameOver(){
+		if (lives == 0){
+			Intent game_over = new Intent(this, EndActivity.class);
+			t.cancel();
+			t.purge();
+			tt.cancel();			
+			saveScore();
+			startActivity(game_over);
 		}
 	}
 }

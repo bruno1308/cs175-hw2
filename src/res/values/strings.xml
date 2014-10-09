@@ -23,6 +23,8 @@
     <string name="dialog_title">Save modifications</string>
     <string name="dialog_ok">Yes</string>
     <string name="dialog_cancel">No</string>
-    
+    <string name="title_activity_end">EndActivity</string>
+    <string name="imgdescription">Logotype</string>
+    <string name="game_name">Flip It!</string>
 
 </resources>
